@@ -21,6 +21,17 @@ class Category(models.Model):
         ordering = ["name"]
         verbose_name_plural = "Categories"
 
+class Tag(models.Model):
+    name = models.CharField(max_length=30, unique=True, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name_plural = "Tags"
 
 class Product(models.Model):
 
@@ -29,6 +40,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to="imgs/products/", null=True, blank=True)
     name = models.CharField(max_length=80, blank=False, null=False)
     price = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(Decimal("0.00"))])
+
+    tags = models.ManyToManyField(Tag, blank=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
