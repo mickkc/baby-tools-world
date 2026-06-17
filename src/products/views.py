@@ -34,8 +34,9 @@ def product_detail(request, category_slug, pk):
 
     comments = product.comments.select_related("user").order_by("-created_at")
 
+    form = CommentForm(request.POST, initial={"user": request.user if request.user.is_authenticated else None})
+    
     if request.method == "POST":
-        form = CommentForm(request.POST, initial={"user": request.user if request.user.is_authenticated else None})
         if form.is_valid():
             rating = form.cleaned_data["rating"]
             text = form.cleaned_data.get("text", "")
@@ -58,14 +59,6 @@ def product_detail(request, category_slug, pk):
                 messages.success(request, "Thank you for your rating.")
 
             return redirect("product_detail", category_slug=category_slug, pk=product.pk)
-    else:
-        # Pre-fill form for authenticated user with existing comment (if any)
-        initial = {}
-        if request.user.is_authenticated:
-            existing = product.comments.filter(user=request.user).first()
-            if existing:
-                initial = {"rating": existing.rating, "text": existing.text}
-        form = CommentForm(initial=initial)
 
     return render(
         request,
