@@ -149,6 +149,12 @@ In order to run that comand go the the directory, where your `manage.py` file is
 python manage.py seed_db
 ```
 
+### Tags
+
+Tags can be applied to products using the admin panel, located at `/admin`. Each product can have multiple tags.
+
+These tags are shown in the product page and if there are no tags available, a default placeholder text is shown. Admins can also filter products by their tags in the admin panel, making it easier to group and find them.
+
 ### Containerization
 
 This section should give a brief overview about the containerization of the django app.
